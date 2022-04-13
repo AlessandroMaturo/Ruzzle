@@ -2,6 +2,7 @@ package it.polito.tdp.ruzzle;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -90,7 +91,14 @@ public class FXMLController {
 
     @FXML
     void handleProva(ActionEvent event) {
-    		
+    	
+    	
+    	/*Pulisco l'interfaccia grafica*/
+    	
+    	for(Pos p: letters.keySet()) {
+    		letters.get(p).setDefaultButton(false);
+    	}
+    	
     	String parola = txtParola.getText() ;
     	if(parola.length() <= 1) {
     		txtResult.setText("Devi inserire parole di almeno 2 lettere");
@@ -104,6 +112,19 @@ public class FXMLController {
     	}
     	
     	//TODO
+    	
+    	List<Pos> posizioni = this.model.trovaParola(parola);
+    	
+    	/* Ricordati che se non la trova ti restituisce una lista null */
+    	
+    	if(posizioni!=null) {
+    		for(Pos p: posizioni) {
+    			
+    			/*così ti fa cambiare il colore*/
+    			
+    			letters.get(p).setDefaultButton(true);
+    		}
+    	}
     }
 
     @FXML
@@ -114,6 +135,15 @@ public class FXMLController {
     @FXML
     void handleRisolvi(ActionEvent event) {
     	//TODO
+    	
+    	txtResult.clear();
+    	List<String> tutte = this.model.trovaTutte();
+    	
+    	txtResult.appendText("Ho trovato " + tutte.size()+ " parole\n");
+    	
+    	for(String si : tutte) {
+    		txtResult.appendText(si+ "\n");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

@@ -1,5 +1,6 @@
 package it.polito.tdp.ruzzle.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.polito.tdp.ruzzle.db.DizionarioDAO;
@@ -45,6 +46,26 @@ public class Model {
 		this.statusTextProperty().set(statusText);
 	}
 
+	public List<Pos> trovaParola(String parola){
+		
+		/* Qua board la conosci già perchè sei nel modello */
+		
+		Ricerca ricerca = new Ricerca();
+		return ricerca.trovaParola(parola, this.board);
+		
+	}
 	
+	public List<String> trovaTutte(){
+		List<String> result = new ArrayList<String>();
+		DizionarioDAO dao = new DizionarioDAO() ;
+
+		for(String parola: dao.listParola()) {
+			if(this.trovaParola(parola.toUpperCase()) != null && parola.length()>1) {
+				result.add(parola);
+			}
+		}
+		
+		return result;
+	}
 
 }
